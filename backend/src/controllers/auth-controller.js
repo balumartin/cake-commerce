@@ -14,6 +14,15 @@ const authController = {
       next(err);
     }
   },
+  login: async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+      const result = await authService.login({ email, password });
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 export default authController;
