@@ -10,6 +10,6 @@ app.use(express.json());
 
 app.use("/api", apiRoutes);
 
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 
 export default app;
