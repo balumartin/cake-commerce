@@ -38,7 +38,7 @@ const authService = {
 
     if (!isMatch) {
       const error = new Error("Invalid password");
-      error.status(401);
+      error.status = 401;
       throw error;
     }
 
