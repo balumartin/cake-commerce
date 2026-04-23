@@ -2,12 +2,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import * as userRepository from "../repositories/userRepository.js";
 import { JWT_SECRET } from "../constants/base.js";
-import { loginSchema, registerSchema } from "../schemas/auth-schema.js";
 
 const authService = {
   register: async ({ email, password }) => {
-    await registerSchema.validate({ email, password });
-
     const existingUser = await userRepository.findByEmail(email);
 
     if (existingUser) {
@@ -24,8 +21,6 @@ const authService = {
     });
   },
   login: async ({ email, password }) => {
-    await loginSchema.validate({ email, password });
-
     const user = await userRepository.findByEmail(email);
 
     if (!user) {
@@ -50,7 +45,7 @@ const authService = {
 
       JWT_SECRET,
 
-      { expiresIn: "15m" }
+      { expiresIn: "15m" },
     );
 
     return {
