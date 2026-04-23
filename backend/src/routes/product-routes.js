@@ -11,7 +11,21 @@ router.post(
   "/",
   authMiddleware,
   requireRole("ADMIN"),
-  productController.create,
+  productController.createProduct,
+);
+
+router.patch(
+  "/:id",
+  authMiddleware,
+  requireRole("ADMIN"),
+  productController.updateProduct
+);
+
+router.delete(
+  "/:id",
+  authMiddleware,
+  requireRole("ADMIN"),
+  productController.deleteProduct
 );
 
 export default router;
