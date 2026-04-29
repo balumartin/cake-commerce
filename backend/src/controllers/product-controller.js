@@ -8,12 +8,13 @@ const productController = {
   createProduct: async (req, res, next) => {
     try {
       await createProductSchema.validate(req.body);
-      const { name, description, price, imageUrl } = req.body;
-      const product = await productService.createProduct({
+      const { name, description, price, imageUrl, categoryId } = req.body;
+      const product = await productService.create({
         name,
         description,
         price,
         imageUrl,
+        categoryId
       });
 
       res.status(200).json(product);
@@ -23,13 +24,14 @@ const productController = {
   },
   getProducts: async (req, res, next) => {
     try {
-      const { page, limit, search, minPrice, maxPrice } = req.query;
-      const result = await productService.getProducts({
+      const { page, limit, search, minPrice, maxPrice, category } = req.query;
+      const result = await productService.getAll({
         page,
         limit,
         search,
         minPrice,
         maxPrice,
+        category
       });
       res.status(201).json(result);
     } catch (err) {
@@ -39,12 +41,13 @@ const productController = {
   updateProduct: async (req, res, next) => {
     try {
       await updateProductSchema.validate(req.body);
-      const { name, description, price, imageUrl } = req.body;
-      const product = await productService.updateProduct(req.params.id, {
+      const { name, description, price, imageUrl, categoryId } = req.body;
+      const product = await productService.update(req.params.id, {
         name,
         description,
         price,
         imageUrl,
+        categoryId
       });
 
       res.json(product);
@@ -55,7 +58,7 @@ const productController = {
 
   deleteProduct: async (req, res, next) => {
     try {
-      await productService.deleteProduct(req.params.id);
+      await productService.delete(req.params.id);
 
       res.status(204).send();
     } catch (err) {
