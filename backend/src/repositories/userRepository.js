@@ -1,13 +1,17 @@
 import prisma from "../config/prisma.js";
 
-export const findByEmail = (email) => {
-  return prisma.user.findUnique({
-    where: { email },
-  });
+const userRepository = {
+  findByEmail: (email) => {
+    return prisma.user.findUnique({
+      where: { email },
+    });
+  },
+
+  create: (data) => {
+    return prisma.user.create({
+      data,
+    });
+  },
 };
 
-export const createUser = (data) => {
-  return prisma.user.create({
-    data,
-  });
-};
+export default userRepository;
