@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import * as userRepository from "../repositories/userRepository.js";
 import { JWT_SECRET } from "../constants/base.js";
+import userRepository from "../repositories/userRepository.js";
+
 
 const authService = {
   register: async ({ email, password }) => {
@@ -15,11 +16,12 @@ const authService = {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    return userRepository.createUser({
+    return userRepository.create({
       email,
       password: hashedPassword,
     });
   },
+
   login: async ({ email, password }) => {
     const user = await userRepository.findByEmail(email);
 
@@ -32,7 +34,7 @@ const authService = {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      const error = new Error("Invalid password");
+      const error = new Error("Invalid credentials");
       error.status = 401;
       throw error;
     }
@@ -42,10 +44,8 @@ const authService = {
         userId: user.id,
         role: user.role,
       },
-
       JWT_SECRET,
-
-      { expiresIn: "15m" },
+      { expiresIn: "15m" }
     );
 
     return {
